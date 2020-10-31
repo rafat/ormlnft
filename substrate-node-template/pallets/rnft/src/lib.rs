@@ -38,12 +38,9 @@ decl_event!(
 		AccountId = <T as frame_system::Trait>::AccountId,
 		ClassId = <T as orml_nft::Trait>::ClassId,
 		TokenData = <T as orml_nft::Trait>::TokenData,
-		TokenId = <T as orml_nft::Trait>::TokenId,
 			 {
 			CreateClass(AccountId,ClassId),
 			MintTokens(AccountId,AccountId,ClassId,TokenData),
-			TransferTokens(AccountId,AccountId,ClassId,TokenId),
-			BurnTokens(AccountId,ClassId,TokenId),
 			}
 );
 
@@ -86,26 +83,6 @@ decl_module! {
 			let result: Result<T::TokenId,dispatch::DispatchError> = orml_nft::Module::<T>::mint(&dest,cid,metadata.clone(),num.clone());
 			
 			Self::deposit_event(RawEvent::MintTokens(who,dest,cid,num));
-			Ok(())
-		}
-		
-		#[weight = 0]
-		pub fn transfer(origin, dest: T::AccountId,token: (<T as orml_nft::Trait>::ClassId, <T as orml_nft::Trait>::TokenId) ) -> dispatch::DispatchResult {
-			let who = ensure_signed(origin)?;
-			
-			let result = orml_nft::Module::<T>::transfer(&who,&dest,token)?;
-			
-			Self::deposit_event(RawEvent::TransferTokens(who,dest,token.0,token.1));
-			Ok(())
-		}
-		
-		#[weight = 0]
-		pub fn burn(origin, token: (<T as orml_nft::Trait>::ClassId, <T as orml_nft::Trait>::TokenId) ) -> dispatch::DispatchResult {
-			let who = ensure_signed(origin)?;
-			
-			let result = orml_nft::Module::<T>::burn(&who,token)?;
-			
-			Self::deposit_event(RawEvent::BurnTokens(who,token.0,token.1));
 			Ok(())
 		}
 		
