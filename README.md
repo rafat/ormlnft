@@ -18,7 +18,6 @@ types.json https://github.com/rafat/ormlnft/blob/main/substrate-node-template/ty
   "TokenId": "u64",
   "ClassData": "u32",
   "TokenData": "u32",
-  "metadata": "Vec<u8>",
   "ClassInfo": {
     "metadata": "Vec<u8>",
     "total_issuance": "TokenId",
